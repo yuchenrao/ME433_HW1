@@ -1,149 +1,112 @@
-/* ************************************************************************** */
-/** Descriptive File Name
+#include<xc.h> // processor SFR definitions
 
-  @Company
-    Company Name
+#include<sys/attribs.h> // __ISR macro
 
-  @File Name
-    filename.c
+// DEVCFG0
 
-  @Summary
-    Brief description of the file.
+#pragma config DEBUG = OFF // no debugging
 
-  @Description
-    Describe the purpose of this file.
- */
-/* ************************************************************************** */
+#pragma config JTAGEN = OFF // no jtag
 
-/* ************************************************************************** */
-/* ************************************************************************** */
-/* Section: Included Files                                                    */
-/* ************************************************************************** */
-/* ************************************************************************** */
+#pragma config ICESEL = ICS_PGx1 // use PGED1 and PGEC1
 
-/* This section lists the other files that are included in this file.
- */
+#pragma config PWP = OFF // no write protect
 
-/* TODO:  Include other files here if needed. */
+#pragma config BWP = OFF // no boot write protect
 
+#pragma config CP = OFF // no code protect
 
-/* ************************************************************************** */
-/* ************************************************************************** */
-/* Section: File Scope or Global Data                                         */
-/* ************************************************************************** */
-/* ************************************************************************** */
+// DEVCFG1
 
-/*  A brief description of a section can be given directly below the section
-    banner.
- */
+#pragma config FNOSC = FRCPLL // use primary oscillator with pll
 
-/* ************************************************************************** */
-/** Descriptive Data Item Name
+#pragma config FSOSCEN = OFF // turn off secondary oscillator
 
-  @Summary
-    Brief one-line summary of the data item.
-    
-  @Description
-    Full description, explaining the purpose and usage of data item.
-    <p>
-    Additional description in consecutive paragraphs separated by HTML 
-    paragraph breaks, as necessary.
-    <p>
-    Type "JavaDoc" in the "How Do I?" IDE toolbar for more information on tags.
-    
-  @Remarks
-    Any additional remarks
- */
-int global_data;
+#pragma config IESO = OFF // no switching clocks
 
+#pragma config POSCMOD = HS // high speed crystal mode
 
-/* ************************************************************************** */
-/* ************************************************************************** */
-// Section: Local Functions                                                   */
-/* ************************************************************************** */
-/* ************************************************************************** */
+#pragma config OSCIOFNC = ON // free up secondary osc pins
 
-/*  A brief description of a section can be given directly below the section
-    banner.
- */
+#pragma config FPBDIV = DIV_1 // divide CPU freq by 1 for peripheral bus clock
 
-/* ************************************************************************** */
+#pragma config FCKSM = CSDCMD // do not enable clock switch
 
-/** 
-  @Function
-    int ExampleLocalFunctionName ( int param1, int param2 ) 
+#pragma config WDTPS = PS1 // slowest wdt
 
-  @Summary
-    Brief one-line description of the function.
+#pragma config WINDIS = OFF // no wdt window
 
-  @Description
-    Full description, explaining the purpose and usage of the function.
-    <p>
-    Additional description in consecutive paragraphs separated by HTML 
-    paragraph breaks, as necessary.
-    <p>
-    Type "JavaDoc" in the "How Do I?" IDE toolbar for more information on tags.
+#pragma config FWDTEN = OFF // wdt off by default
 
-  @Precondition
-    List and describe any required preconditions. If there are no preconditions,
-    enter "None."
+#pragma config FWDTWINSZ = WINSZ_25 // wdt window at 25%
 
-  @Parameters
-    @param param1 Describe the first parameter to the function.
-    
-    @param param2 Describe the second parameter to the function.
+// DEVCFG2 - get the CPU clock to 48MHz
 
-  @Returns
-    List (if feasible) and describe the return values of the function.
-    <ul>
-      <li>1   Indicates an error occurred
-      <li>0   Indicates an error did not occur
-    </ul>
+#pragma config FPLLIDIV = DIV_2 // divide input clock to be in range 4-5MHz
 
-  @Remarks
-    Describe any special behavior not described above.
-    <p>
-    Any additional remarks.
+#pragma config FPLLMUL = MUL_24 // multiply clock after FPLLIDIV
 
-  @Example
-    @code
-    if(ExampleFunctionName(1, 2) == 0)
-    {
-        return 3;
+#pragma config FPLLODIV = DIV_2 // divide clock after FPLLMUL to get 48MHz
+
+#pragma config UPLLIDIV = DIV_2 // divider for the 8MHz input clock, then multiply by 12 to get 48MHz for USB
+
+#pragma config UPLLEN = ON // USB clock on
+
+// DEVCFG3
+
+#pragma config USERID = 0 // some 16bit userid, doesn't matter what
+
+#pragma config PMDL1WAY = OFF // allow multiple reconfigurations
+
+#pragma config IOL1WAY = OFF // allow multiple reconfigurations
+
+#pragma config FUSBIDIO = ON // USB pins controlled by USB module
+
+#pragma config FVBUSONIO = ON // USB BUSON controlled by USB module
+
+int main() {
+
+__builtin_disable_interrupts();
+
+// set the CP0 CONFIG register to indicate that kseg0 is cacheable (0x3)
+__builtin_mtc0(_CP0_CONFIG, _CP0_CONFIG_SELECT, 0xa4210583);
+
+// 0 data RAM access wait states
+BMXCONbits.BMXWSDRM = 0x0;
+
+// enable multi vector interrupts
+INTCONbits.MVEC = 0x1;
+
+// disable JTAG to get pins back
+DDPCONbits.JTAGEN = 0;
+
+// do your TRIS and LAT commands here
+TRISAbits.TRISA4 = 0;  // LED as an output button
+LATAbits.LATA4 = 0;    // set high
+TRISBbits.TRISB4 = 1;  // button as an input button
+
+__builtin_enable_interrupts();
+
+while(1) {
+    LATAbits.LATA4 = 1;  // turn on the LED
+    _CP0_SET_COUNT(0);   // set core time to 0
+    while (_CP0_GET_COUNT() < 24000){
+        while (PORTBbits.RB4 == 0){
+        LATAbits.LATA4 = 0; // turn off the LED
     }
- */
-static int ExampleLocalFunction(int param1, int param2) {
-    return 0;
+    }
+    LATAbits.LATA4 = 0; // turn off the LED
+    _CP0_SET_COUNT(0);   // set core time to 0
+    while (_CP0_GET_COUNT() < 24000){
+        while (PORTBbits.RB4 == 0){
+        LATAbits.LATA4 = 0; // turn off the LED
+    }
+    }
+    // use _CP0_SET_COUNT(0) and _CP0_GET_COUNT() to test the PIC timing
+      // remember the core timer runs at half the CPU speed
+
+    }
 }
 
 
-/* ************************************************************************** */
-/* ************************************************************************** */
-// Section: Interface Functions                                               */
-/* ************************************************************************** */
-/* ************************************************************************** */
 
-/*  A brief description of a section can be given directly below the section
-    banner.
- */
-
-// *****************************************************************************
-
-/** 
-  @Function
-    int ExampleInterfaceFunctionName ( int param1, int param2 ) 
-
-  @Summary
-    Brief one-line description of the function.
-
-  @Remarks
-    Refer to the example_file.h interface header for function usage details.
- */
-int ExampleInterfaceFunction(int param1, int param2) {
-    return 0;
-}
-
-
-/* *****************************************************************************
- End of File
- */
