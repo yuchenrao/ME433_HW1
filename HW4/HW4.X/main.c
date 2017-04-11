@@ -74,7 +74,7 @@ RPA1Rbits.RPA1R = 0b0011;   //OC1 to pin A1, output
 
 SPI1CON = 0;
 SPI1BUF;
-SPI1BRG = 0x1000;   //80000000/(2*desires)-1
+SPI1BRG = 0x2;   //80000000/(2*desires)-1
 SPI1STATbits.SPIROV = 0;
 SPI1CONbits.CKE = 1;
 SPI1CONbits.MSTEN = 1;  //master operation
@@ -125,14 +125,18 @@ TRISBbits.TRISB4 = 1;  // button as an input button
 
 initSPI1();   // init the SPI
 
-unsigned int sinewave[100];
+unsigned int sinewave[50];
 unsigned int triawave[100];
 int i;
-int count = 1;
+int counts = 1;
+int countt = 1;
+
+for (i = 0; i < 50; ++i){
+    // create a sine wave
+    sinewave[i] = 255.0/2.0 + (255.0/2.0)*sin(2*3.14*i/50.0);
+}
 
 for (i = 0; i < 100; ++i){
-    // create a sine wave
-    sinewave[i] = 255.0/2.0 + (255.0/2.0)*sin(2*3.14*i/100.0);
     // create a triangle wave
     triawave[i] = 255.0*i/100.0;
 }
@@ -146,15 +150,19 @@ while(1) {
         ;
     }
     //send the value
-    setVoltage(0, sinewave[count]);
+    setVoltage(0, sinewave[counts]);
     _CP0_SET_COUNT(0);
     while(_CP0_GET_COUNT() < 24000){
         ;
     }
-    setVoltage(1, triawave[count]);
-    count++;
-    if (count == 100){
-        count = 0;
+    setVoltage(1, triawave[countt]);
+    counts++;
+    countt++;
+    if (counts == 50){
+        counts = 0;
+    }
+    if (countt == 100){
+        countt =0;
     }
     }
 }
