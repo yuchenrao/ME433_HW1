@@ -74,7 +74,7 @@ void drawCharacter(char c, int x, int y, char color1, char color2){
         if (x+i < 128){
             for (j = 0; j < 8; j++){
                 if (y + j < 128){
-                    if (ASCII[d][i] >> j & 1 == 1){ //? >>j
+                    if (ASCII[d][i] >> j & 1 == 1){
                         LCD_drawPixel(x + i, y + j, color1);
                     }
                     else{
@@ -89,8 +89,8 @@ void drawCharacter(char c, int x, int y, char color1, char color2){
 
 void drawString(char *msg, int x, int y, char color1, char color2){
     int i = 0;
-    while(msg[i] != 0){
-        drawCharacter(msg[i], x, y, color1, color2);  //? x+6*k
+    while(msg[i]){
+        drawCharacter(msg[i], x+6*i, y, color1, color2);  // leave a blank for text
         i++;
     }
 }
@@ -99,13 +99,14 @@ void drawString(char *msg, int x, int y, char color1, char color2){
 void drawBar(int x, int y, char color1, char color2, int len, int maxlen, int w){
     int i, j;
     int l = len;
-    for (i = 1; i < 1+1; i++){
-        for (j = 0; j < w + 1; j++){
+    int l2 = maxlen;
+    for (i = 0; i < l; i++){
+        for (j = 0; j < w; j++){
             LCD_drawPixel(x + i, y + j, color1);
         }
     }
-    for (i = l + 1; i < maxlen + 1; i++){
-        for (j = 0; j < w + 1; j++){
+    for (i = l; i < l2; i++){
+        for (j = 0; j < w; j++){
             LCD_drawPixel(x + i, y + j, color2);
         }
     }
@@ -142,10 +143,18 @@ int main() {
     while(1) {
         int num;
         char output[20];
+        float fps;
         for (num = 0; num < 101; num++){
+            _CP0_SET_COUNT(0);
             sprintf(output, "Hello world %d.", num);
-            drawCharacter(output, 30, 30, BLUE, BLACK);
-            drawBar(20, 90, YELLOW, RED, 20 + num, 120, 5);
+            drawString(output, 28, 32, WHITE, BLACK);
+            drawBar(10, 60, YELLOW, BLUE, 10 + num, 110, 5);
+            fps = 24000000.0/_CP0_GET_COUNT();
+            sprintf(output, "Frames/sec %5.2f.", fps);
+            drawString(output, 20, 80, WHITE, BLACK);
+            while(_CP0_GET_COUNT() < 4800000){
+                ;
+            }
         }
         LCD_clearScreen(BLACK);
     }
