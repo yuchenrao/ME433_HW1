@@ -48,9 +48,9 @@ void I2C_read_multiple(unsigned char address, unsigned char reg, unsigned char *
     i2c_master_send(reg);                  // CTRL1_XL address: 0x10
     i2c_master_restart();                   // restart i2c
     i2c_master_send((address << 1)|1);   // // which clears bit 1, indicating a read
-    for(i=1; i < l + 1; i++){
+    for(i=0; i < l+1; i++){
         data[i] = i2c_master_recv();              // receive a byte from the slave
-        if(i == (l-1)){
+        if(i == l){
             i2c_master_ack(1);                      // sends NACK = 1 (no more bytes requested from slave)
         }
         else{
@@ -61,25 +61,25 @@ void I2C_read_multiple(unsigned char address, unsigned char reg, unsigned char *
 }
 
 signed char get_ang_x(unsigned char * data){
-    return data[3] << 8 | data[2];
+    return data[4] << 8 | data[3];
 }
 
 signed char get_ang_y(unsigned char * data){
-    return data[5] << 8 | data[4];
+    return data[6] << 8 | data[5];
 }
 
 signed char get_ang_z(unsigned char * data){
-    return data[7] << 8 | data[8];
+    return data[8] << 8 | data[7];
 }
 
 signed char get_acc_x(unsigned char * data){
-    return data[9] << 8 | data[8];
+    return data[10] << 8 | data[9];
 }
 
 signed char get_acc_y(unsigned char * data){
-    return data[11] << 8 | data[10];
+    return data[12] << 8 | data[11];
 }
 
 signed char get_acc_z(unsigned char * data){
-    return data[13] << 8 | data[12];
+    return data[14] << 8 | data[13];
 }

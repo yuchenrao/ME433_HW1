@@ -128,9 +128,6 @@ void drawBar_x(int x, int y, char color1, char color2, signed char acc_x, int w)
                     LCD_drawPixel(x + i, y + j, color2);
                 }
             }
-            for (j = 0; j< w; j++){
-                LCD_drawPixel(x - i, y + j, color2);
-            }
         }
     }
     else{
@@ -145,9 +142,6 @@ void drawBar_x(int x, int y, char color1, char color2, signed char acc_x, int w)
                 for (j = 0; j < w; j++){
                     LCD_drawPixel(x - i, y + j, color2);
                 }
-            }
-            for (j = 0; j< w; j++){
-                LCD_drawPixel(x + i, y + j, color2);
             }
         }
     }
@@ -168,9 +162,6 @@ void drawBar_y(int x, int y, char color1, char color2, signed char acc_y, int w)
                     LCD_drawPixel(x + j, y + i, color2);
                 }
             }
-//            for (j = 0; j< w; j++){
-//                LCD_drawPixel(x + j, y - i, color2);
-//            }
         }
     }
     else{
@@ -186,9 +177,6 @@ void drawBar_y(int x, int y, char color1, char color2, signed char acc_y, int w)
                     LCD_drawPixel(x + j, y - i, color2);
                 }
             }
-//            for (j = 0; j< w; j++){
-//                LCD_drawPixel(x + j, y + i, color2);
-//            }
         }
     }
     
@@ -247,19 +235,13 @@ int main() {
             drawString(output, 5, 61, WHITE, BLACK);
             sprintf(output, "y");
             drawString(output, 61, 115, WHITE, BLACK);
-            
-//            for(i = 0; i < 5; i++){
-//                for (j = 0; j < 5; j++){
-//                    LCD_drawPixel(62 + i, 62 + j, WHITE);
-//                }
-//            }
+           
 
             acc_x = ((float)(get_acc_x(imu_data)))*0.0061*100;
             acc_y = ((float)(get_acc_y(imu_data)))*0.0061*100;
-            acc_z = ((float)(get_acc_z(imu_data)))*0.0061*100;
 
-            drawBar_y(62, 62, YELLOW, BLACK, ((signed char) (acc_z)), 5);
-            drawBar_x(62, 62, BLUE, BLACK, ((signed char) (acc_y)), 5);
+            drawBar_y(62, 62, YELLOW, BLACK, ((signed char) (acc_y)), 5);
+            drawBar_x(62, 62, BLUE, BLACK, ((signed char) (acc_x)), 5);
        
             while(_CP0_GET_COUNT() < 4800000){
                 ;
