@@ -153,7 +153,7 @@ void APP_Tasks(void) {
         case APP_STATE_SERVICE_TASKS:
         {
             // LED 
-            
+
             LATAbits.LATA4 = 0; // turn off the LED
             _CP0_SET_COUNT(0); // set core time to 0
             while (_CP0_GET_COUNT() < 24000) {
@@ -161,7 +161,7 @@ void APP_Tasks(void) {
                     LATAbits.LATA4 = 0; // turn off the LED
                 }
             }
-            
+
             LATAbits.LATA4 = 1; // turn on the LED
             _CP0_SET_COUNT(0); // set core time to 0
             while (_CP0_GET_COUNT() < 24000) {
@@ -169,41 +169,38 @@ void APP_Tasks(void) {
                     LATAbits.LATA4 = 0; // turn off the LED
                 }
             }
-            
+
 
             // LCD part
             unsigned char imu_addr = 0;
             imu_addr = WhoAmI();
-    
+
             int num = 1;
             int i, j;
-//            for (num; num < 101; num++) {
-                unsigned char output[20];
-                unsigned char imu_data[14];
-                float acc_x;
-                float acc_y;
-                I2C_read_multiple(IMU_ADDR, 0x20, imu_data, 14);
-                sprintf(output, "Address is %d", imu_addr);
-                drawString(output, 5, 5, WHITE, BLACK);
+            unsigned char output[20];
+            unsigned char imu_data[14];
+            float acc_x;
+            float acc_y;
+            I2C_read_multiple(IMU_ADDR, 0x20, imu_data, 14);
+            sprintf(output, "Address is %d", imu_addr);
+            drawString(output, 5, 5, WHITE, BLACK);
 
-                sprintf(output, "x");
-                drawString(output, 5, 61, WHITE, BLACK);
-                sprintf(output, "y");
-                drawString(output, 61, 115, WHITE, BLACK);
+            sprintf(output, "x");
+            drawString(output, 5, 61, WHITE, BLACK);
+            sprintf(output, "y");
+            drawString(output, 61, 115, WHITE, BLACK);
 
 
-                acc_x = ((float) (get_acc_x(imu_data)))*0.0061 * 100;
-                acc_y = ((float) (get_acc_y(imu_data)))*0.0061 * 100;
+            acc_x = ((float) (get_acc_x(imu_data)))*0.0061 * 100;
+            acc_y = ((float) (get_acc_y(imu_data)))*0.0061 * 100;
 
-                drawBar_y(62, 62, YELLOW, BLACK, ((signed char) (acc_y)), 5);
-                drawBar_x(62, 62, BLUE, BLACK, ((signed char) (acc_x)), 5);
+            drawBar_y(62, 62, YELLOW, BLACK, ((signed char) (acc_y)), 5);
+            drawBar_x(62, 62, BLUE, BLACK, ((signed char) (acc_x)), 5);
 
-                while (_CP0_GET_COUNT() < 4800000) {
-                    ;
-                }
-//            }
-//            LCD_clearScreen(BLACK);
-            break;
+            while (_CP0_GET_COUNT() < 4800000) {
+                ;
+            } 
+           break;
         }
 
             /* The default state should never be executed. */
