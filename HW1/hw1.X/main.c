@@ -93,14 +93,14 @@ while(1) {
     while (_CP0_GET_COUNT() < 24000){
         while (PORTBbits.RB4 == 0){
         LATAbits.LATA4 = 0; // turn off the LED
-    }
+        }
     }
     LATAbits.LATA4 = 0; // turn off the LED
     _CP0_SET_COUNT(0);   // set core time to 0
     while (_CP0_GET_COUNT() < 24000){
         while (PORTBbits.RB4 == 0){
         LATAbits.LATA4 = 0; // turn off the LED
-    }
+        }
     }
     // use _CP0_SET_COUNT(0) and _CP0_GET_COUNT() to test the PIC timing
       // remember the core timer runs at half the CPU speed
