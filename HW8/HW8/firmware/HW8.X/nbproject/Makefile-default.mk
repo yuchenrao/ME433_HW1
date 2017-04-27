@@ -51,17 +51,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=../src/system_config/default/framework/system/clk/src/sys_clk_static.c ../src/system_config/default/framework/system/ports/src/sys_ports_static.c ../src/system_config/default/system_init.c ../src/system_config/default/system_interrupt.c ../src/system_config/default/system_exceptions.c ../src/system_config/default/system_tasks.c ../src/app.c ../src/main.c ../../../../../../../../microchip/harmony/v1_10/framework/system/devcon/src/sys_devcon.c ../../../../../../../../microchip/harmony/v1_10/framework/system/devcon/src/sys_devcon_pic32mx.c ../../../../HW7/i2c_master_noint.c ../../../../HW7/ILI9163C.c ../../../../HW7/IMU.c
+SOURCEFILES_QUOTED_IF_SPACED=../src/system_config/default/framework/system/clk/src/sys_clk_static.c ../src/system_config/default/framework/system/ports/src/sys_ports_static.c ../src/system_config/default/system_init.c ../src/system_config/default/system_interrupt.c ../src/system_config/default/system_exceptions.c ../src/system_config/default/system_tasks.c ../src/app.c ../src/main.c ../../../../HW7/i2c_master_noint.c ../../../../HW7/ILI9163C.c ../../../../HW7/IMU.c ../../../../../../../../microchip/harmony/v1_10/framework/system/devcon/src/sys_devcon.c ../../../../../../../../microchip/harmony/v1_10/framework/system/devcon/src/sys_devcon_pic32mx.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/_ext/639803181/sys_clk_static.o ${OBJECTDIR}/_ext/822048611/sys_ports_static.o ${OBJECTDIR}/_ext/1688732426/system_init.o ${OBJECTDIR}/_ext/1688732426/system_interrupt.o ${OBJECTDIR}/_ext/1688732426/system_exceptions.o ${OBJECTDIR}/_ext/1688732426/system_tasks.o ${OBJECTDIR}/_ext/1360937237/app.o ${OBJECTDIR}/_ext/1360937237/main.o ${OBJECTDIR}/_ext/1710693635/sys_devcon.o ${OBJECTDIR}/_ext/1710693635/sys_devcon_pic32mx.o ${OBJECTDIR}/_ext/671507000/i2c_master_noint.o ${OBJECTDIR}/_ext/671507000/ILI9163C.o ${OBJECTDIR}/_ext/671507000/IMU.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/_ext/639803181/sys_clk_static.o.d ${OBJECTDIR}/_ext/822048611/sys_ports_static.o.d ${OBJECTDIR}/_ext/1688732426/system_init.o.d ${OBJECTDIR}/_ext/1688732426/system_interrupt.o.d ${OBJECTDIR}/_ext/1688732426/system_exceptions.o.d ${OBJECTDIR}/_ext/1688732426/system_tasks.o.d ${OBJECTDIR}/_ext/1360937237/app.o.d ${OBJECTDIR}/_ext/1360937237/main.o.d ${OBJECTDIR}/_ext/1710693635/sys_devcon.o.d ${OBJECTDIR}/_ext/1710693635/sys_devcon_pic32mx.o.d ${OBJECTDIR}/_ext/671507000/i2c_master_noint.o.d ${OBJECTDIR}/_ext/671507000/ILI9163C.o.d ${OBJECTDIR}/_ext/671507000/IMU.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/_ext/639803181/sys_clk_static.o ${OBJECTDIR}/_ext/822048611/sys_ports_static.o ${OBJECTDIR}/_ext/1688732426/system_init.o ${OBJECTDIR}/_ext/1688732426/system_interrupt.o ${OBJECTDIR}/_ext/1688732426/system_exceptions.o ${OBJECTDIR}/_ext/1688732426/system_tasks.o ${OBJECTDIR}/_ext/1360937237/app.o ${OBJECTDIR}/_ext/1360937237/main.o ${OBJECTDIR}/_ext/671507000/i2c_master_noint.o ${OBJECTDIR}/_ext/671507000/ILI9163C.o ${OBJECTDIR}/_ext/671507000/IMU.o ${OBJECTDIR}/_ext/1710693635/sys_devcon.o ${OBJECTDIR}/_ext/1710693635/sys_devcon_pic32mx.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/_ext/639803181/sys_clk_static.o.d ${OBJECTDIR}/_ext/822048611/sys_ports_static.o.d ${OBJECTDIR}/_ext/1688732426/system_init.o.d ${OBJECTDIR}/_ext/1688732426/system_interrupt.o.d ${OBJECTDIR}/_ext/1688732426/system_exceptions.o.d ${OBJECTDIR}/_ext/1688732426/system_tasks.o.d ${OBJECTDIR}/_ext/1360937237/app.o.d ${OBJECTDIR}/_ext/1360937237/main.o.d ${OBJECTDIR}/_ext/671507000/i2c_master_noint.o.d ${OBJECTDIR}/_ext/671507000/ILI9163C.o.d ${OBJECTDIR}/_ext/671507000/IMU.o.d ${OBJECTDIR}/_ext/1710693635/sys_devcon.o.d ${OBJECTDIR}/_ext/1710693635/sys_devcon_pic32mx.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/_ext/639803181/sys_clk_static.o ${OBJECTDIR}/_ext/822048611/sys_ports_static.o ${OBJECTDIR}/_ext/1688732426/system_init.o ${OBJECTDIR}/_ext/1688732426/system_interrupt.o ${OBJECTDIR}/_ext/1688732426/system_exceptions.o ${OBJECTDIR}/_ext/1688732426/system_tasks.o ${OBJECTDIR}/_ext/1360937237/app.o ${OBJECTDIR}/_ext/1360937237/main.o ${OBJECTDIR}/_ext/1710693635/sys_devcon.o ${OBJECTDIR}/_ext/1710693635/sys_devcon_pic32mx.o ${OBJECTDIR}/_ext/671507000/i2c_master_noint.o ${OBJECTDIR}/_ext/671507000/ILI9163C.o ${OBJECTDIR}/_ext/671507000/IMU.o
+OBJECTFILES=${OBJECTDIR}/_ext/639803181/sys_clk_static.o ${OBJECTDIR}/_ext/822048611/sys_ports_static.o ${OBJECTDIR}/_ext/1688732426/system_init.o ${OBJECTDIR}/_ext/1688732426/system_interrupt.o ${OBJECTDIR}/_ext/1688732426/system_exceptions.o ${OBJECTDIR}/_ext/1688732426/system_tasks.o ${OBJECTDIR}/_ext/1360937237/app.o ${OBJECTDIR}/_ext/1360937237/main.o ${OBJECTDIR}/_ext/671507000/i2c_master_noint.o ${OBJECTDIR}/_ext/671507000/ILI9163C.o ${OBJECTDIR}/_ext/671507000/IMU.o ${OBJECTDIR}/_ext/1710693635/sys_devcon.o ${OBJECTDIR}/_ext/1710693635/sys_devcon_pic32mx.o
 
 # Source Files
-SOURCEFILES=../src/system_config/default/framework/system/clk/src/sys_clk_static.c ../src/system_config/default/framework/system/ports/src/sys_ports_static.c ../src/system_config/default/system_init.c ../src/system_config/default/system_interrupt.c ../src/system_config/default/system_exceptions.c ../src/system_config/default/system_tasks.c ../src/app.c ../src/main.c ../../../../../../../../microchip/harmony/v1_10/framework/system/devcon/src/sys_devcon.c ../../../../../../../../microchip/harmony/v1_10/framework/system/devcon/src/sys_devcon_pic32mx.c ../../../../HW7/i2c_master_noint.c ../../../../HW7/ILI9163C.c ../../../../HW7/IMU.c
+SOURCEFILES=../src/system_config/default/framework/system/clk/src/sys_clk_static.c ../src/system_config/default/framework/system/ports/src/sys_ports_static.c ../src/system_config/default/system_init.c ../src/system_config/default/system_interrupt.c ../src/system_config/default/system_exceptions.c ../src/system_config/default/system_tasks.c ../src/app.c ../src/main.c ../../../../HW7/i2c_master_noint.c ../../../../HW7/ILI9163C.c ../../../../HW7/IMU.c ../../../../../../../../microchip/harmony/v1_10/framework/system/devcon/src/sys_devcon.c ../../../../../../../../microchip/harmony/v1_10/framework/system/devcon/src/sys_devcon_pic32mx.c
 
 
 CFLAGS=
@@ -148,18 +148,6 @@ ${OBJECTDIR}/_ext/1360937237/main.o: ../src/main.c  nbproject/Makefile-${CND_CON
 	@${RM} ${OBJECTDIR}/_ext/1360937237/main.o 
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1360937237/main.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -ffunction-sections -O1 -I"../src" -I"../src/system_config/default" -I"../src/default" -I"../../../../../../../../microchip/harmony/v1_10/framework" -I"../src/system_config/default/framework" -MMD -MF "${OBJECTDIR}/_ext/1360937237/main.o.d" -o ${OBJECTDIR}/_ext/1360937237/main.o ../src/main.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD) 
 	
-${OBJECTDIR}/_ext/1710693635/sys_devcon.o: ../../../../../../../../microchip/harmony/v1_10/framework/system/devcon/src/sys_devcon.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/_ext/1710693635" 
-	@${RM} ${OBJECTDIR}/_ext/1710693635/sys_devcon.o.d 
-	@${RM} ${OBJECTDIR}/_ext/1710693635/sys_devcon.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1710693635/sys_devcon.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -ffunction-sections -O1 -I"../src" -I"../src/system_config/default" -I"../src/default" -I"../../../../../../../../microchip/harmony/v1_10/framework" -I"../src/system_config/default/framework" -MMD -MF "${OBJECTDIR}/_ext/1710693635/sys_devcon.o.d" -o ${OBJECTDIR}/_ext/1710693635/sys_devcon.o ../../../../../../../../microchip/harmony/v1_10/framework/system/devcon/src/sys_devcon.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD) 
-	
-${OBJECTDIR}/_ext/1710693635/sys_devcon_pic32mx.o: ../../../../../../../../microchip/harmony/v1_10/framework/system/devcon/src/sys_devcon_pic32mx.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/_ext/1710693635" 
-	@${RM} ${OBJECTDIR}/_ext/1710693635/sys_devcon_pic32mx.o.d 
-	@${RM} ${OBJECTDIR}/_ext/1710693635/sys_devcon_pic32mx.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1710693635/sys_devcon_pic32mx.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -ffunction-sections -O1 -I"../src" -I"../src/system_config/default" -I"../src/default" -I"../../../../../../../../microchip/harmony/v1_10/framework" -I"../src/system_config/default/framework" -MMD -MF "${OBJECTDIR}/_ext/1710693635/sys_devcon_pic32mx.o.d" -o ${OBJECTDIR}/_ext/1710693635/sys_devcon_pic32mx.o ../../../../../../../../microchip/harmony/v1_10/framework/system/devcon/src/sys_devcon_pic32mx.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD) 
-	
 ${OBJECTDIR}/_ext/671507000/i2c_master_noint.o: ../../../../HW7/i2c_master_noint.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/671507000" 
 	@${RM} ${OBJECTDIR}/_ext/671507000/i2c_master_noint.o.d 
@@ -177,6 +165,18 @@ ${OBJECTDIR}/_ext/671507000/IMU.o: ../../../../HW7/IMU.c  nbproject/Makefile-${C
 	@${RM} ${OBJECTDIR}/_ext/671507000/IMU.o.d 
 	@${RM} ${OBJECTDIR}/_ext/671507000/IMU.o 
 	@${FIXDEPS} "${OBJECTDIR}/_ext/671507000/IMU.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -ffunction-sections -O1 -I"../src" -I"../src/system_config/default" -I"../src/default" -I"../../../../../../../../microchip/harmony/v1_10/framework" -I"../src/system_config/default/framework" -MMD -MF "${OBJECTDIR}/_ext/671507000/IMU.o.d" -o ${OBJECTDIR}/_ext/671507000/IMU.o ../../../../HW7/IMU.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD) 
+	
+${OBJECTDIR}/_ext/1710693635/sys_devcon.o: ../../../../../../../../microchip/harmony/v1_10/framework/system/devcon/src/sys_devcon.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/_ext/1710693635" 
+	@${RM} ${OBJECTDIR}/_ext/1710693635/sys_devcon.o.d 
+	@${RM} ${OBJECTDIR}/_ext/1710693635/sys_devcon.o 
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1710693635/sys_devcon.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -ffunction-sections -O1 -I"../src" -I"../src/system_config/default" -I"../src/default" -I"../../../../../../../../microchip/harmony/v1_10/framework" -I"../src/system_config/default/framework" -MMD -MF "${OBJECTDIR}/_ext/1710693635/sys_devcon.o.d" -o ${OBJECTDIR}/_ext/1710693635/sys_devcon.o ../../../../../../../../microchip/harmony/v1_10/framework/system/devcon/src/sys_devcon.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD) 
+	
+${OBJECTDIR}/_ext/1710693635/sys_devcon_pic32mx.o: ../../../../../../../../microchip/harmony/v1_10/framework/system/devcon/src/sys_devcon_pic32mx.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/_ext/1710693635" 
+	@${RM} ${OBJECTDIR}/_ext/1710693635/sys_devcon_pic32mx.o.d 
+	@${RM} ${OBJECTDIR}/_ext/1710693635/sys_devcon_pic32mx.o 
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1710693635/sys_devcon_pic32mx.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE) -g -D__DEBUG -D__MPLAB_DEBUGGER_PK3=1 -fframe-base-loclist  -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -ffunction-sections -O1 -I"../src" -I"../src/system_config/default" -I"../src/default" -I"../../../../../../../../microchip/harmony/v1_10/framework" -I"../src/system_config/default/framework" -MMD -MF "${OBJECTDIR}/_ext/1710693635/sys_devcon_pic32mx.o.d" -o ${OBJECTDIR}/_ext/1710693635/sys_devcon_pic32mx.o ../../../../../../../../microchip/harmony/v1_10/framework/system/devcon/src/sys_devcon_pic32mx.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD) 
 	
 else
 ${OBJECTDIR}/_ext/639803181/sys_clk_static.o: ../src/system_config/default/framework/system/clk/src/sys_clk_static.c  nbproject/Makefile-${CND_CONF}.mk
@@ -227,18 +227,6 @@ ${OBJECTDIR}/_ext/1360937237/main.o: ../src/main.c  nbproject/Makefile-${CND_CON
 	@${RM} ${OBJECTDIR}/_ext/1360937237/main.o 
 	@${FIXDEPS} "${OBJECTDIR}/_ext/1360937237/main.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -ffunction-sections -O1 -I"../src" -I"../src/system_config/default" -I"../src/default" -I"../../../../../../../../microchip/harmony/v1_10/framework" -I"../src/system_config/default/framework" -MMD -MF "${OBJECTDIR}/_ext/1360937237/main.o.d" -o ${OBJECTDIR}/_ext/1360937237/main.o ../src/main.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD) 
 	
-${OBJECTDIR}/_ext/1710693635/sys_devcon.o: ../../../../../../../../microchip/harmony/v1_10/framework/system/devcon/src/sys_devcon.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/_ext/1710693635" 
-	@${RM} ${OBJECTDIR}/_ext/1710693635/sys_devcon.o.d 
-	@${RM} ${OBJECTDIR}/_ext/1710693635/sys_devcon.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1710693635/sys_devcon.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -ffunction-sections -O1 -I"../src" -I"../src/system_config/default" -I"../src/default" -I"../../../../../../../../microchip/harmony/v1_10/framework" -I"../src/system_config/default/framework" -MMD -MF "${OBJECTDIR}/_ext/1710693635/sys_devcon.o.d" -o ${OBJECTDIR}/_ext/1710693635/sys_devcon.o ../../../../../../../../microchip/harmony/v1_10/framework/system/devcon/src/sys_devcon.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD) 
-	
-${OBJECTDIR}/_ext/1710693635/sys_devcon_pic32mx.o: ../../../../../../../../microchip/harmony/v1_10/framework/system/devcon/src/sys_devcon_pic32mx.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}/_ext/1710693635" 
-	@${RM} ${OBJECTDIR}/_ext/1710693635/sys_devcon_pic32mx.o.d 
-	@${RM} ${OBJECTDIR}/_ext/1710693635/sys_devcon_pic32mx.o 
-	@${FIXDEPS} "${OBJECTDIR}/_ext/1710693635/sys_devcon_pic32mx.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -ffunction-sections -O1 -I"../src" -I"../src/system_config/default" -I"../src/default" -I"../../../../../../../../microchip/harmony/v1_10/framework" -I"../src/system_config/default/framework" -MMD -MF "${OBJECTDIR}/_ext/1710693635/sys_devcon_pic32mx.o.d" -o ${OBJECTDIR}/_ext/1710693635/sys_devcon_pic32mx.o ../../../../../../../../microchip/harmony/v1_10/framework/system/devcon/src/sys_devcon_pic32mx.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD) 
-	
 ${OBJECTDIR}/_ext/671507000/i2c_master_noint.o: ../../../../HW7/i2c_master_noint.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}/_ext/671507000" 
 	@${RM} ${OBJECTDIR}/_ext/671507000/i2c_master_noint.o.d 
@@ -256,6 +244,18 @@ ${OBJECTDIR}/_ext/671507000/IMU.o: ../../../../HW7/IMU.c  nbproject/Makefile-${C
 	@${RM} ${OBJECTDIR}/_ext/671507000/IMU.o.d 
 	@${RM} ${OBJECTDIR}/_ext/671507000/IMU.o 
 	@${FIXDEPS} "${OBJECTDIR}/_ext/671507000/IMU.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -ffunction-sections -O1 -I"../src" -I"../src/system_config/default" -I"../src/default" -I"../../../../../../../../microchip/harmony/v1_10/framework" -I"../src/system_config/default/framework" -MMD -MF "${OBJECTDIR}/_ext/671507000/IMU.o.d" -o ${OBJECTDIR}/_ext/671507000/IMU.o ../../../../HW7/IMU.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD) 
+	
+${OBJECTDIR}/_ext/1710693635/sys_devcon.o: ../../../../../../../../microchip/harmony/v1_10/framework/system/devcon/src/sys_devcon.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/_ext/1710693635" 
+	@${RM} ${OBJECTDIR}/_ext/1710693635/sys_devcon.o.d 
+	@${RM} ${OBJECTDIR}/_ext/1710693635/sys_devcon.o 
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1710693635/sys_devcon.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -ffunction-sections -O1 -I"../src" -I"../src/system_config/default" -I"../src/default" -I"../../../../../../../../microchip/harmony/v1_10/framework" -I"../src/system_config/default/framework" -MMD -MF "${OBJECTDIR}/_ext/1710693635/sys_devcon.o.d" -o ${OBJECTDIR}/_ext/1710693635/sys_devcon.o ../../../../../../../../microchip/harmony/v1_10/framework/system/devcon/src/sys_devcon.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD) 
+	
+${OBJECTDIR}/_ext/1710693635/sys_devcon_pic32mx.o: ../../../../../../../../microchip/harmony/v1_10/framework/system/devcon/src/sys_devcon_pic32mx.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/_ext/1710693635" 
+	@${RM} ${OBJECTDIR}/_ext/1710693635/sys_devcon_pic32mx.o.d 
+	@${RM} ${OBJECTDIR}/_ext/1710693635/sys_devcon_pic32mx.o 
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1710693635/sys_devcon_pic32mx.o.d" $(SILENT) -rsi ${MP_CC_DIR}../  -c ${MP_CC}  $(MP_EXTRA_CC_PRE)  -g -x c -c -mprocessor=$(MP_PROCESSOR_OPTION)  -ffunction-sections -O1 -I"../src" -I"../src/system_config/default" -I"../src/default" -I"../../../../../../../../microchip/harmony/v1_10/framework" -I"../src/system_config/default/framework" -MMD -MF "${OBJECTDIR}/_ext/1710693635/sys_devcon_pic32mx.o.d" -o ${OBJECTDIR}/_ext/1710693635/sys_devcon_pic32mx.o ../../../../../../../../microchip/harmony/v1_10/framework/system/devcon/src/sys_devcon_pic32mx.c    -DXPRJ_default=$(CND_CONF)  -no-legacy-libc  $(COMPARISON_BUILD) 
 	
 endif
 

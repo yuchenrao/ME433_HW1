@@ -56,7 +56,9 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 #include "app.h"
 #include <stdio.h>
 #include <xc.h>
-
+#include "ILI9163C.h"
+#include "i2c_master_noint.h"
+#include "IMU.h"
 // *****************************************************************************
 // *****************************************************************************
 // Section: Global Data Definitions
@@ -67,6 +69,8 @@ uint8_t APP_MAKE_BUFFER_DMA_READY dataOut[APP_READ_BUFFER_SIZE];
 uint8_t APP_MAKE_BUFFER_DMA_READY readBuffer[APP_READ_BUFFER_SIZE];
 int len, i = 0;
 int startTime = 0;
+// create a flag
+int flag = 0;
 
 // *****************************************************************************
 /* Application Data
@@ -340,6 +344,20 @@ void APP_Initialize(void) {
     /* Set up the read buffer */
     appData.readBuffer = &readBuffer[0];
 
+    // do your TRIS and LAT commands here
+    TRISAbits.TRISA4 = 0; // LED as an output button
+    LATAbits.LATA4 = 0; // set high
+    TRISBbits.TRISB4 = 1; // button as an input button
+
+    // turn odd analog B2, B3
+    ANSELBbits.ANSB2 = 0;
+    ANSELBbits.ANSB3 = 0;
+
+    SPI1_init();
+    LCD_init();
+    LCD_clearScreen(BLACK);
+    IMU_init();
+
     startTime = _CP0_GET_COUNT();
 }
 
@@ -418,7 +436,7 @@ void APP_Tasks(void) {
             /* Check if a character was received or a switch was pressed.
              * The isReadComplete flag gets updated in the CDC event handler. */
 
-            if (appData.isReadComplete || _CP0_GET_COUNT() - startTime > (48000000 / 2 / 5)) {
+            if (appData.isReadComplete || _CP0_GET_COUNT() - startTime > (48000000 / 2 / 100)) {
                 appData.state = APP_STATE_SCHEDULE_WRITE;
             }
 
@@ -437,14 +455,54 @@ void APP_Tasks(void) {
             appData.isWriteComplete = false;
             appData.state = APP_STATE_WAIT_FOR_WRITE_COMPLETE;
 
-            len = sprintf(dataOut, "%d\r\n", i);
-            i++;
+            unsigned char imu_data[14];
+            float acc_x;
+            float acc_y;
+            float acc_z;
+            float ang_x;
+            float ang_y;
+            float ang_z;
+
+            // get IMU data
+            I2C_read_multiple(IMU_ADDR, 0x20, imu_data, 14);
+
+            acc_x = ((float) (get_acc_x(imu_data)))*0.061/100;
+            acc_y = ((float) (get_acc_y(imu_data)))*0.061/100;
+            acc_z = ((float) (get_acc_z(imu_data)))*0.061/100;
+            ang_x = ((float) (get_ang_x(imu_data)))*0.035/10;
+            ang_y = ((float) (get_ang_y(imu_data)))*0.035/10;
+            ang_z = ((float) (get_ang_z(imu_data)))*0.035/10;
+
+            len = sprintf(dataOut, "\r\n %d %5.2f %5.2f %5.2f %5.2f %5.2f %5.2f", i, acc_x, acc_y, acc_z, ang_x, ang_y, ang_z);
+            
+
             if (appData.isReadComplete) {
+                // input 'r', print IMU information
+                if (appData.readBuffer[0] == 'r') {
+                    flag = 1;
+                    i++;
+                } 
+                else {
+                    dataOut[0] = 0;
+                    len = 1;    
+                }
                 USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
-                        &appData.writeTransferHandle,
-                        appData.readBuffer, 1,
-                        USB_DEVICE_CDC_TRANSFER_FLAGS_DATA_COMPLETE);
+                            &appData.writeTransferHandle,
+                            dataOut, len,
+                            USB_DEVICE_CDC_TRANSFER_FLAGS_DATA_COMPLETE);
+               
             } else {
+                if (flag == 1){
+                    i++;
+                    if (i == 101){
+                        flag = 0;
+                        i = 0;
+                    }
+                }
+                else {
+                    dataOut[0] = 0;
+                    len = 1;    
+                }
                 USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
                         &appData.writeTransferHandle, dataOut, len,
                         USB_DEVICE_CDC_TRANSFER_FLAGS_DATA_COMPLETE);

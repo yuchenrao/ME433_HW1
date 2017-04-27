@@ -24,7 +24,6 @@ void APP_Initialize(void) {
     SPI1_init();
     LCD_init();
     LCD_clearScreen(BLACK);
-
     IMU_init();
 
 }
