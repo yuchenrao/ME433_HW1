@@ -365,8 +365,8 @@ void APP_Tasks(void) {
 //            appData.xCoordinate = (int8_t) dir_table[vector & 0x07];
 //            appData.yCoordinate = (int8_t) dir_table[(vector + 2) & 0x07];
      
-            appData.xCoordinate = (int8_t) (acc_y);
-            appData.yCoordinate = (int8_t) (acc_x);
+            appData.xCoordinate = (int8_t) (acc_x);
+            appData.yCoordinate = (int8_t) (acc_y);
             //                vector++;
 //            movement_length = 0;
             //            }
