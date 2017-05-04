@@ -66,7 +66,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 // *****************************************************************************
 
 
-#define firnum 6
+#define firnum 4
 #define mafnum 4
 uint8_t APP_MAKE_BUFFER_DMA_READY dataOut[APP_READ_BUFFER_SIZE];
 uint8_t APP_MAKE_BUFFER_DMA_READY readBuffer[APP_READ_BUFFER_SIZE];
@@ -81,8 +81,8 @@ int j=0;
 float maf_z[mafnum] = {.0,.0,.0,.0};
 // FIR
 int x=0;
-float fir_z[firnum] = {.0,.0,.0,.0,.0,.0};
-float fircoef[firnum] = {0.019212,0.131146,0.349642,0.349642,0.131146,0.019212};
+float fir_z[firnum] = {.0,.0,.0,.0};
+float fircoef[firnum] = {0.0338, 0.2401, 0.4521, 0.2401, 0.0338};
 
 // *****************************************************************************
 /* Application Data
@@ -498,7 +498,8 @@ void APP_Tasks(void) {
             // FIR filter
             fir_z[x] = acc_z;
             for(count=0;count<firnum;count++){
-                fir_ave_z = fir_ave_z+fircoef[count]*fir_z[count];
+                // add a constant number as the last coefficient
+                fir_ave_z = fir_ave_z+fircoef[count]*fir_z[count]+fircoef[firnum];
             }
             x++;
             if (x == firnum){
