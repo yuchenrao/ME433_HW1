@@ -278,7 +278,7 @@ void APP_Initialize(void) {
     //appData.emulateMouse = true;
     appData.hidInstance = 0;
     appData.isMouseReportSendBusy = false;
-    
+
     // do your TRIS and LAT commands here
     TRISAbits.TRISA4 = 0; // LED as an output button
     LATAbits.LATA4 = 0; // set high
@@ -332,7 +332,7 @@ void APP_Tasks(void) {
         }
 
         case APP_STATE_WAIT_FOR_CONFIGURATION:
-        
+
             /* Check if the device is configured. The 
              * isConfigured flag is updated in the
              * Device Event Handler */
@@ -341,35 +341,37 @@ void APP_Tasks(void) {
                 appData.state = APP_STATE_MOUSE_EMULATE;
             }
             break;
-        
+
         case APP_STATE_MOUSE_EMULATE:
-        {  
+        {
             //IMU read
-            
+
             unsigned char imu_data[14];
             float acc_x;
             float acc_y;
-//            float acc_z;
+            //            float acc_z;
 
             // get IMU data
             I2C_read_multiple(IMU_ADDR, 0x20, imu_data, 14);
 
-            acc_x = ((float) (get_acc_x(imu_data)))*0.061/100;
-            acc_y = ((float) (get_acc_y(imu_data)))*0.061/100-1;
+            acc_x = ((float) (get_acc_x(imu_data)))*0.061 / 100;
+            acc_y = ((float) (get_acc_y(imu_data)))*0.061 / 100 - 1;
 
             LATAbits.LATA4 = 1; // set high
-            // every 50th loop, or 20 times per second
-            //            if (movement_length > 50) {
-            appData.mouseButton[0] = MOUSE_BUTTON_STATE_RELEASED;
-            appData.mouseButton[1] = MOUSE_BUTTON_STATE_RELEASED;
-//            appData.xCoordinate = (int8_t) dir_table[vector & 0x07];
-//            appData.yCoordinate = (int8_t) dir_table[(vector + 2) & 0x07];
-     
-            appData.xCoordinate = (int8_t) (acc_x);
-            appData.yCoordinate = (int8_t) (acc_y);
-            //                vector++;
-//            movement_length = 0;
-            //            }
+
+            if (inc == 5) {
+                appData.mouseButton[0] = MOUSE_BUTTON_STATE_RELEASED;
+                appData.mouseButton[1] = MOUSE_BUTTON_STATE_RELEASED;
+                appData.xCoordinate = (int8_t) (acc_x);
+                appData.yCoordinate = (int8_t) (acc_y);
+                inc = 0;
+            } else {
+                appData.mouseButton[0] = MOUSE_BUTTON_STATE_RELEASED;
+                appData.mouseButton[1] = MOUSE_BUTTON_STATE_RELEASED;
+                appData.xCoordinate = (int8_t) 0;
+                appData.yCoordinate = (int8_t) 0;
+                inc++;
+            }
 
             if (!appData.isMouseReportSendBusy) {
                 /* This means we can send the mouse report. The
@@ -421,7 +423,7 @@ void APP_Tasks(void) {
                             sizeof (MOUSE_REPORT));
                     appData.setIdleTimer = 0;
                 }
-//                movement_length++;
+                //                movement_length++;
             }
 
             break;
