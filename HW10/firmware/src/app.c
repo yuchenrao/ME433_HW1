@@ -77,12 +77,12 @@ int flag = 0;
 // create previous value for IIR
 float pre_ave_z = 0;
 // MAF
-int j=0;
-float maf_z[mafnum] = {.0,.0,.0,.0};
+int j = 0;
+float maf_z[mafnum] = {.0, .0, .0, .0};
 // FIR
-int x=0;
-float fir_z[firnum] = {.0,.0,.0,.0};
-float fircoef[firnum] = {0.0338, 0.2401, 0.4521, 0.2401, 0.0338};
+int x = 0;
+float fir_z[] = {.0, .0, .0, .0};
+float fircoef[] = {0.0338, 0.2401, 0.4521, 0.2401, 0.0338};
 
 // *****************************************************************************
 /* Application Data
@@ -471,70 +471,68 @@ void APP_Tasks(void) {
             float acc_z;
             float iir_ave_z;
             float maf_ave_z;
-            float fir_ave_z;
+            float fir_ave_z = 0;
             float maf_sum = 0;
             int count;
 
             // get IMU data
             I2C_read_multiple(IMU_ADDR, 0x20, imu_data, 14);
-            acc_z = ((float) (get_acc_z(imu_data)))*0.061/1000;
+//            acc_z = ((float) (get_acc_z(imu_data)))*0.061 / 1000;
+            acc_z = (float) (get_acc_z(imu_data));
 
             //  MAF filter
             maf_z[j] = acc_z;
-            for(count=0;count<mafnum;count++){
-                maf_sum = maf_sum+maf_z[count];
+            for (count = 0; count < mafnum; count++) {
+                maf_sum = maf_sum + maf_z[count];
             }
-            maf_ave_z = maf_sum/mafnum;
+            maf_ave_z = maf_sum / mafnum;
             j++;
-            if (j == mafnum){
+            if (j == mafnum) {
                 j = 0;
             }
-            
+
             // IIR filter
             float a = 0.75;
-            iir_ave_z = a*pre_ave_z + (1.0-a)*acc_z;
+            iir_ave_z = a * pre_ave_z + (1.0 - a) * acc_z;
             pre_ave_z = iir_ave_z;
-            
+
             // FIR filter
-            fir_z[x] = acc_z;
-            for(count=0;count<firnum;count++){
+            for (count = 0; count < firnum - 1; count++) {
+                fir_z[count] = fir_z[count + 1];
+            }
+            fir_z[firnum - 1] = acc_z;
+            for (count = 0; count < firnum; count++) {
                 // add a constant number as the last coefficient
-                fir_ave_z = fir_ave_z+fircoef[count]*fir_z[count]+fircoef[firnum];
+                fir_ave_z = fir_ave_z + fircoef[count + 1] * fir_z[count];
             }
-            x++;
-            if (x == firnum){
-                x = 0;
-            }
-           
-            len = sprintf(dataOut, "\r\n %d %5.3f %5.3f %5.3f %5.3f", i, acc_z, maf_ave_z, iir_ave_z, fir_ave_z);
-            
+            fir_ave_z = fir_ave_z + fircoef[0];
+
+            len = sprintf(dataOut, "%d %5.3f %5.3f %5.3f %5.3f\r\n", i, acc_z, maf_ave_z, iir_ave_z, fir_ave_z);
 
             if (appData.isReadComplete) {
                 // input 'r', print IMU information
                 if (appData.readBuffer[0] == 'r') {
                     flag = 1;
                     i++;
-                } 
-                else {
+                } else {
                     dataOut[0] = 0;
-                    len = 1;    
+                    len = 1;
                 }
                 USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
-                            &appData.writeTransferHandle,
-                            dataOut, len,
-                            USB_DEVICE_CDC_TRANSFER_FLAGS_DATA_COMPLETE);
-               
+                        &appData.writeTransferHandle,
+                        dataOut, len,
+                        USB_DEVICE_CDC_TRANSFER_FLAGS_DATA_COMPLETE);
+
             } else {
-                if (flag == 1){
+                if (flag == 1) {
                     i++;
-                    if (i == 101){
+                    if (i == 101) {
                         flag = 0;
                         i = 0;
                     }
-                }
-                else {
+                } else {
                     dataOut[0] = 0;
-                    len = 1;    
+                    len = 1;
                 }
                 USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
                         &appData.writeTransferHandle, dataOut, len,
