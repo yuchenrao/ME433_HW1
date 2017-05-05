@@ -401,7 +401,7 @@ void APP_Tasks(void) {
                              * between 4msec >= idlerate <= 1020 msec.
                              */
                             if (appData.setIdleTimer
-                                    >= appData.idleRate * 10) {
+                                    >= appData.idleRate * 4) {
                                 /* Send REPORT as idle time has elapsed */
                                 appData.isMouseReportSendBusy = true;
                             } else {
