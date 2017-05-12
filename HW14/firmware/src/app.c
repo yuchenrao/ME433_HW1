@@ -395,26 +395,26 @@ void APP_Tasks(void) {
              * else wait for the current read to complete */
 
             appData.state = APP_STATE_WAIT_FOR_READ_COMPLETE;
-            int ii = 0;
-            // loop thru the characters in the buffer
-            while (appData.readBuffer[ii] != 0) {
-                // if you got a newline
-                if (appData.readBuffer[ii] == '\n' || appData.readBuffer[ii] == '\r') {
-                    rx[rxPos] = 0; // end the array
-                    sscanf(rx, "%d", &rxVal); // get the int out of the array
-                    gotRx = 1; // set the flag
-                    break; // get out of the while loop
-                } else if (appData.readBuffer[ii] == 0) {
-                    break; // there was no newline, get out of the while loop
-                } else {
-                    // save the character into the array
-                    rx[rxPos] = appData.readBuffer[ii];
-                    rxPos++;
-                    ii++;
-                }
-            }
 
             if (appData.isReadComplete == true) {
+                int ii = 0;
+                // loop thru the characters in the buffer
+                while (appData.readBuffer[ii] != 0) {
+                    // if you got a newline
+                    if (appData.readBuffer[ii] == '\n' || appData.readBuffer[ii] == '\r') {
+                        rx[rxPos] = 0; // end the array
+                        sscanf(rx, "%d", &rxVal); // get the int out of the array
+                        gotRx = 1; // set the flag
+                        break; // get out of the while loop
+                    } else if (appData.readBuffer[ii] == 0) {
+                        break; // there was no newline, get out of the while loop
+                    } else {
+                        // save the character into the array
+                        rx[rxPos] = appData.readBuffer[ii];
+                        rxPos++;
+                        ii++;
+                    }
+                }
                 appData.isReadComplete = false;
                 appData.readTransferHandle = USB_DEVICE_CDC_TRANSFER_HANDLE_INVALID;
 
@@ -477,18 +477,6 @@ void APP_Tasks(void) {
                 startTime = _CP0_GET_COUNT();
             }
 
-//            if (appData.isReadComplete) {
-//                
-//                USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
-//                        &appData.writeTransferHandle,
-//                        appData.readBuffer, 1,
-//                        USB_DEVICE_CDC_TRANSFER_FLAGS_DATA_COMPLETE);
-//            } else {
-//                USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
-//                        &appData.writeTransferHandle, dataOut, len,
-//                        USB_DEVICE_CDC_TRANSFER_FLAGS_DATA_COMPLETE);
-//                startTime = _CP0_GET_COUNT();
-//            }
             break;
 
         case APP_STATE_WAIT_FOR_WRITE_COMPLETE:
