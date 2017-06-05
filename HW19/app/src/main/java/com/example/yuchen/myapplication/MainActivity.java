@@ -1,7 +1,5 @@
 package com.example.yuchen.myapplication;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
@@ -41,9 +39,12 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
     private TextView mTextView;
 
     static long prevtime = 0; // for FPS calculation
-    int thresh = 0; // comparison value
+    int threshT = 0; // brightness detection threshold
+    int threshR = 0; // gray detection threshold
+    float COM = 0;
 
     SeekBar myControl;
+    SeekBar myControl2;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +53,10 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
 
         mTextView = (TextView) findViewById(R.id.cameraStatus);
         myControl = (SeekBar) findViewById(R.id.seek1);
+        myControl2 = (SeekBar) findViewById(R.id.seek2);
+
+        setMyControlListener();
+        setMyControl2Listener();
 
         // see if the app has permission to use the camera
         ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA}, 1);
@@ -71,8 +76,6 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
             mTextView.setText("no camera permissions");
         }
 
-        setMyControlListener();
-
     }
 
     private void setMyControlListener() {
@@ -83,7 +86,29 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 progressChanged = progress;
-                thresh = progress;   // use bar to control the thresh
+                threshT = progress;   // use bar to control the thresh
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+    }
+
+    private void setMyControl2Listener() {
+        myControl2.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+
+            int progressChanged = 0;
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progressChanged = progress;
+                threshR = progress;   // use bar to control the thresh
             }
 
             @Override
@@ -134,15 +159,32 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
 //            int thresh = 0; // comparison value
             int[] pixels = new int[bmp.getWidth()]; // pixels[] is the RGBA data
 //            int startY = 200; // which row in the bitmap to analyze to read
-            for (int startY = 0; startY < bmp.getHeight(); startY = startY + 3) {
+            for (int startY = 50; startY < bmp.getHeight(); startY = startY + 5) {
                 bmp.getPixels(pixels, 0, bmp.getWidth(), 0, startY, bmp.getWidth(), 1);
 
-                // in the row, see if there is more green than red
+//                for (int i = 0; i < bmp.getWidth(); i++) {
+//                    if ((green(pixels[i]) - red(pixels[i])) > thresh) {
+//                        pixels[i] = rgb(0, 255, 0); // over write the pixel with pure green
+//                    }
+//                }
 
+                int sum_mr = 0; // the sum of the mass times the radius
+                int sum_m = 0; // the sum of the masses
                 for (int i = 0; i < bmp.getWidth(); i++) {
-                    if ((green(pixels[i]) - red(pixels[i])) > thresh) {
-                        pixels[i] = rgb(0, 255, 0); // over write the pixel with pure green
+                    if (((green(pixels[i]) - red(pixels[i])) > -threshR)&&((green(pixels[i]) - red(pixels[i])) < threshR)&&(green(pixels[i])  > threshT)) {
+                        pixels[i] = rgb(1, 1, 1); // set the pixel to almost 100% black
+
+                        sum_m = sum_m + green(pixels[i])+red(pixels[i])+blue(pixels[i]);
+                        sum_mr = sum_mr + (green(pixels[i])+red(pixels[i])+blue(pixels[i]))*i;
                     }
+                }
+                // only use the data if there were a few pixels identified, otherwise you might get a divide by 0 error
+                if(sum_m>5){
+                    COM = sum_mr / sum_m;
+                    canvas.drawCircle(COM, startY,3,paint1);
+                }
+                else{
+                    COM = 0;
                 }
 
                 // update the row
@@ -155,7 +197,7 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
         canvas.drawCircle(pos, 240, 5, paint1); // x position, y position, diameter, color
 
         // write the pos as text
-        canvas.drawText("thresh = " + thresh, 10, 200, paint1);
+        canvas.drawText("threshT = " + threshT +" threshR = " + threshR, 10, 200, paint1);
         c.drawBitmap(bmp, 0, 0, null);
         mSurfaceHolder.unlockCanvasAndPost(c);
 
