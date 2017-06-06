@@ -76,6 +76,9 @@ int valuel = 600;  //velocity for left motor
 int valuer = 600;  //velocity for right motor
 int dirl = 0;    //direction for left motor, 0 or 1
 int dirr = 1;    //direction for right motor, 0 or 1
+int error = 0;
+int MAX_DUTY = 600;
+int kp = 1;
 
 // *****************************************************************************
 /* Application Data
@@ -369,7 +372,7 @@ void APP_Initialize(void) {
     T2CONbits.ON = 1;
     OC1CONbits.ON = 1;
     OC4CONbits.ON = 1;
-    
+
     startTime = _CP0_GET_COUNT();
 }
 
@@ -421,7 +424,88 @@ void APP_Tasks(void) {
              * else wait for the current read to complete */
 
             appData.state = APP_STATE_WAIT_FOR_READ_COMPLETE;
+//            
+//            LATAbits.LATA1 = dirr; // direction
+//            OC1RS = valuer; // velocity, 50%
+//            LATBbits.LATB3 = dirl; // direction
+//            OC4RS = valuel; // velocity, 50%
+            
+//            error = rxVal - 240; // 240 means the dot is in the middle of the screen
+//            if (error<0) { // slow down the left motor to steer to the left
+//                error  = -error;
+//                valuel = MAX_DUTY - kp*error;
+//                valuer = MAX_DUTY;
+//                if (valuel < 0){
+//                    valuel = 0;
+//                }
+//            }
+//            else { // slow down the right motor to steer to the right
+//                valuer = MAX_DUTY - kp*error;
+//                valuer = MAX_DUTY;
+//                if (valuer<0) {
+//                    valuer = 0;
+//                }
+//            }
+            
+            // boundary for position value
+            if (rxVal < 0){
+                rxVal = 0;
+            }
+            else if (rxVal > 600){
+                rxVal = 600;
+            }
 
+            //set velocity for motors
+            if (rxVal < 80){
+                valuel = 200;
+                valuer = 600;
+                dirl = 1;
+                dirr = 1;
+            }
+            else if (rxVal > 530){
+                valuel = 600;
+                valuer = 200;
+                dirl = 0;
+                dirr = 0;
+            }
+            else if (rxVal < 250){
+                valuel = rxVal*1.5;
+                valuer = rxVal*2.5;
+                dirl = 0;    
+                dirr = 1;  
+            }
+            else if (rxVal > 400){
+                valuer = rxVal*1.5;
+                valuel = rxVal*2.5;
+                dirl = 0;    
+                dirr = 1;
+            }
+            else {
+                valuer = 600;
+                valuel = 600;
+                dirl = 0;    
+                dirr = 1;
+            }
+
+            // boundary for velocity
+            if (valuel > 1200){
+                valuel = 1200;
+            }
+            else if (valuel < 0){
+                valuel = 0;
+            }
+            if (valuer > 1200){
+                valuer = 1200;
+            }
+            else if (valuer < 0){
+                valuer = 0;
+            }
+            
+            LATAbits.LATA1 = 1; // always go forward
+            LATBbits.LATB3 = 0;
+            OC1RS = valuel;
+            OC4RS = valuer;
+            
             if (appData.isReadComplete == true) {
                 int ii = 0;
                 // loop thru the characters in the buffer
@@ -441,6 +525,8 @@ void APP_Tasks(void) {
                         ii++;
                     }
                 }
+            
+                
                 appData.isReadComplete = false;
                 appData.readTransferHandle = USB_DEVICE_CDC_TRANSFER_HANDLE_INVALID;
 
@@ -485,85 +571,17 @@ void APP_Tasks(void) {
             appData.isWriteComplete = false;
             appData.state = APP_STATE_WAIT_FOR_WRITE_COMPLETE;
             
-            LATAbits.LATA1 = dirr; // direction
-            OC1RS = valuer; // velocity, 50%
-            LATBbits.LATB3 = dirl; // direction
-            OC4RS = valuel; // velocity, 50%
-            
             if (gotRx) {
-                
-                // boundary for position value
-                if (rxVal < 0){
-                    rxVal = 0;
-                }
-                else if (rxVal > 600){
-                    rxVal = 600;
-                }
-                
-                //set velocity for motors
-                if (rxVal < 80){
-                    valuel = 200;
-                    valuer = 600;
-                    dirl = 1;
-                    dirr = 1;
-                }
-                else if (rxVal > 530){
-                    valuel = 600;
-                    valuer = 200;
-                    dirl = 0;
-                    dirr = 0;
-                }
-                else if (rxVal < 250){
-                    valuel = rxVal*1.5;
-                    valuer = rxVal*2.5;
-                    dirl = 0;    
-                    dirr = 1;  
-                }
-                else if (rxVal > 400){
-                    valuer = rxVal*1.5;
-                    valuel = rxVal*2.5;
-                    dirl = 0;    
-                    dirr = 1;
-                }
-                else {
-                    valuer = 600;
-                    valuel = 600;
-                    dirl = 0;    
-                    dirr = 1;
-                }
-                               
-                // boundary for velocity
-                if (valuel > 1200){
-                    valuel = 1200;
-                }
-                else if (valuel < 0){
-                    valuel = 0;
-                }
-                if (valuer > 1200){
-                    valuer = 1200;
-                }
-                else if (valuer < 0){
-                    valuer = 0;
-                }
-               
-                // when you read data from the host
-                LATAbits.LATA1 = dirr; // direction
-                OC1RS = valuer; // velocity, 50%
-                LATBbits.LATB3 = dirl; // direction
-                OC4RS = valuel; // velocity, 50%
-                
-//                len = sprintf(dataOut, "got: %d\r\n", rxVal);
-                i++;
                 len = sprintf(dataOut, "got: %d\r\n", rxVal);
+                i++;
                 USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
                         &appData.writeTransferHandle,
                         dataOut, len,
                         USB_DEVICE_CDC_TRANSFER_FLAGS_DATA_COMPLETE);
                 rxPos = 0;
                 gotRx = 0;
-            } 
-            else {
-                len = sprintf(dataOut, "%d\r\n",i);
+            } else {
+                len = sprintf(dataOut, "%d\r\n", i);
                 i++;
                 USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
                         &appData.writeTransferHandle, dataOut, len,

@@ -64,7 +64,7 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
     static long prevtime = 0; // for FPS calculation
     int threshT = 0; // brightness detection threshold
     int threshR = 0; // gray detection threshold
-    float COM = 0;
+    int COM = 0;
 //    ScrollView myScrollView;
     TextView myTextView2;
 
@@ -86,7 +86,7 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
         setMyControl2Listener();
 
         // see if the app has permission to use the camera
-        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA}, 1);
+//        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA}, 1);
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             mSurfaceView = (SurfaceView) findViewById(R.id.surfaceview);
             mSurfaceHolder = mSurfaceView.getHolder();
@@ -254,7 +254,7 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
         try {
             rxString = new String(data, "UTF-8"); // put the data you got into a string
 //            myTextView2.append(rxString);
-//            myTextView2.setText("the position is " + rxString);
+            myTextView2.setText("the position is " + rxString);
 //            myScrollView.fullScroll(View.FOCUS_DOWN);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -321,14 +321,18 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
                 if(sum_m>5){
                     COM = sum_mr / sum_m;
                     canvas.drawCircle(COM, startY,3,paint1);
-//                    String sendString = String.valueOf(COM) + '\n';
-//                    try {
-//                        sPort.write(sendString.getBytes(), 10); // 10 is the timeout
-//                    } catch (IOException e) { }
-                    myTextView2.setText("the position is " + COM);
+                    String sendString = String.valueOf(COM) + '\n';
+                    try {
+                        sPort.write(sendString.getBytes(), 10); // 10 is the timeout
+                    } catch (IOException e) { }
+//                    myTextView2.setText("the position is " + COM);
                 }
                 else{
                     COM = 0;
+                    String sendString = String.valueOf(COM) + '\n';
+                    try {
+                        sPort.write(sendString.getBytes(), 10); // 10 is the timeout
+                    } catch (IOException e) { }
 
                 }
 
