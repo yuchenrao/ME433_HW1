@@ -70,7 +70,7 @@ int startTime = 0;
 char rx[64]; // the raw data
 int rxPos = 0; // how much data has been stored
 int gotRx = 0; // the flag
-int posVal = 0; // a place to store the int that was received
+int rxVal = 0; // a place to store the int that was received
 
 int valuel = 600;  //velocity for left motor
 int valuer = 600;  //velocity for right motor
@@ -429,7 +429,7 @@ void APP_Tasks(void) {
                     // if you got a newline
                     if (appData.readBuffer[ii] == '\n' || appData.readBuffer[ii] == '\r') {
                         rx[rxPos] = 0; // end the array
-                        sscanf(rx, "%d", &posVal); // get the int out of the array
+                        sscanf(rx, "%d", &rxVal); // get the int out of the array
                         gotRx = 1; // set the flag
                         break; // get out of the while loop
                     } else if (appData.readBuffer[ii] == 0) {
@@ -493,35 +493,35 @@ void APP_Tasks(void) {
             if (gotRx) {
                 
                 // boundary for position value
-                if (posVal < 0){
-                    posVal = 0;
+                if (rxVal < 0){
+                    rxVal = 0;
                 }
-                else if (posVal > 600){
-                    posVal = 600;
+                else if (rxVal > 600){
+                    rxVal = 600;
                 }
                 
                 //set velocity for motors
-                if (posVal < 80){
+                if (rxVal < 80){
                     valuel = 200;
                     valuer = 600;
                     dirl = 1;
                     dirr = 1;
                 }
-                else if (posVal > 530){
+                else if (rxVal > 530){
                     valuel = 600;
                     valuer = 200;
                     dirl = 0;
                     dirr = 0;
                 }
-                else if (posVal < 250){
-                    valuel = posVal*1.5;
-                    valuer = posVal*2.5;
+                else if (rxVal < 250){
+                    valuel = rxVal*1.5;
+                    valuer = rxVal*2.5;
                     dirl = 0;    
                     dirr = 1;  
                 }
-                else if (posVal > 400){
-                    valuer = posVal*1.5;
-                    valuel = posVal*2.5;
+                else if (rxVal > 400){
+                    valuer = rxVal*1.5;
+                    valuel = rxVal*2.5;
                     dirl = 0;    
                     dirr = 1;
                 }
@@ -554,7 +554,7 @@ void APP_Tasks(void) {
                 
 //                len = sprintf(dataOut, "got: %d\r\n", rxVal);
                 i++;
-                len = sprintf(dataOut, "got: %d %d %d\r\n", valuel, valuer, posVal);
+                len = sprintf(dataOut, "got: %d\r\n", rxVal);
                 USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
                         &appData.writeTransferHandle,
                         dataOut, len,
@@ -562,14 +562,14 @@ void APP_Tasks(void) {
                 rxPos = 0;
                 gotRx = 0;
             } 
-            else {
-                len = sprintf(dataOut, "%d\r\n", i);
-                i++;
-                USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
-                        &appData.writeTransferHandle, dataOut, len,
-                        USB_DEVICE_CDC_TRANSFER_FLAGS_DATA_COMPLETE);
-                startTime = _CP0_GET_COUNT();
-            }
+//            else {
+//                len = sprintf(dataOut, "%d\r\n", i);
+//                i++;
+//                USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
+//                        &appData.writeTransferHandle, dataOut, len,
+//                        USB_DEVICE_CDC_TRANSFER_FLAGS_DATA_COMPLETE);
+//                startTime = _CP0_GET_COUNT();
+//            }
 
             break;
 
