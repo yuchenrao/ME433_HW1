@@ -428,9 +428,9 @@ void APP_Tasks(void) {
 //            LATAbits.LATA1 = dirr; // direction
 //            OC1RS = valuer; // velocity, 50%
 //            LATBbits.LATB3 = dirl; // direction
-//            OC4RS = valuel; // velocity, 50%
+////            OC4RS = valuel; // velocity, 50%
             
-//            error = rxVal - 240; // 240 means the dot is in the middle of the screen
+//            error = rxVal - 300; // 240 means the dot is in the middle of the screen
 //            if (error<0) { // slow down the left motor to steer to the left
 //                error  = -error;
 //                valuel = MAX_DUTY - kp*error;
@@ -448,58 +448,58 @@ void APP_Tasks(void) {
 //            }
             
             // boundary for position value
-            if (rxVal < 0){
-                rxVal = 0;
-            }
-            else if (rxVal > 600){
-                rxVal = 600;
-            }
-
-            //set velocity for motors
-            if (rxVal < 80){
-                valuel = 200;
-                valuer = 600;
-                dirl = 1;
-                dirr = 1;
-            }
-            else if (rxVal > 530){
-                valuel = 600;
-                valuer = 200;
-                dirl = 0;
-                dirr = 0;
-            }
-            else if (rxVal < 250){
-                valuel = rxVal*1.5;
-                valuer = rxVal*2.5;
-                dirl = 0;    
-                dirr = 1;  
-            }
-            else if (rxVal > 400){
-                valuer = rxVal*1.5;
-                valuel = rxVal*2.5;
-                dirl = 0;    
-                dirr = 1;
-            }
-            else {
-                valuer = 600;
-                valuel = 600;
-                dirl = 0;    
-                dirr = 1;
-            }
-
-            // boundary for velocity
-            if (valuel > 1200){
-                valuel = 1200;
-            }
-            else if (valuel < 0){
-                valuel = 0;
-            }
-            if (valuer > 1200){
-                valuer = 1200;
-            }
-            else if (valuer < 0){
-                valuer = 0;
-            }
+//            if (rxVal < 0){
+//                rxVal = 0;
+//            }
+//            else if (rxVal > 600){
+//                rxVal = 600;
+//            }
+//
+//            //set velocity for motors
+//            if (rxVal < 80){
+//                valuel = 200;
+//                valuer = 600;
+//                dirl = 1;
+//                dirr = 1;
+//            }
+//            else if (rxVal > 530){
+//                valuel = 600;
+//                valuer = 200;
+//                dirl = 0;
+//                dirr = 0;
+//            }
+//            else if (rxVal < 250){
+//                valuel = rxVal*1.5;
+//                valuer = rxVal*2.5;
+//                dirl = 0;    
+//                dirr = 1;  
+//            }
+//            else if (rxVal > 400){
+//                valuer = rxVal*1.5;
+//                valuel = rxVal*2.5;
+//                dirl = 0;    
+//                dirr = 1;
+//            }
+//            else {
+//                valuer = 600;
+//                valuel = 600;
+//                dirl = 0;    
+//                dirr = 1;
+//            }
+//
+//            // boundary for velocity
+//            if (valuel > 1200){
+//                valuel = 1200;
+//            }
+//            else if (valuel < 0){
+//                valuel = 0;
+//            }
+//            if (valuer > 1200){
+//                valuer = 1200;
+//            }
+//            else if (valuer < 0){
+//                valuer = 0;
+//            }
             
             LATAbits.LATA1 = 1; // always go forward
             LATBbits.LATB3 = 0;
@@ -513,7 +513,7 @@ void APP_Tasks(void) {
                     // if you got a newline
                     if (appData.readBuffer[ii] == '\n' || appData.readBuffer[ii] == '\r') {
                         rx[rxPos] = 0; // end the array
-                        sscanf(rx, "%d", &rxVal); // get the int out of the array
+                        sscanf(rx, "%d %d", &valuel, &valuer); // get the int out of the array
                         gotRx = 1; // set the flag
                         break; // get out of the while loop
                     } else if (appData.readBuffer[ii] == 0) {
@@ -572,7 +572,7 @@ void APP_Tasks(void) {
             appData.state = APP_STATE_WAIT_FOR_WRITE_COMPLETE;
             
             if (gotRx) {
-                len = sprintf(dataOut, "got: %d\r\n", rxVal);
+                len = sprintf(dataOut, "got: %d %d\r\n", valuel, valuer);
                 i++;
                 USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
                         &appData.writeTransferHandle,
@@ -581,7 +581,7 @@ void APP_Tasks(void) {
                 rxPos = 0;
                 gotRx = 0;
             } else {
-                len = sprintf(dataOut, "%d\r\n", i);
+                len = sprintf(dataOut, "%d\r\n", 0);
                 i++;
                 USB_DEVICE_CDC_Write(USB_DEVICE_CDC_INDEX_0,
                         &appData.writeTransferHandle, dataOut, len,

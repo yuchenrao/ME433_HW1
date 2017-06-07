@@ -65,8 +65,16 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
     int threshT = 0; // brightness detection threshold
     int threshR = 0; // gray detection threshold
     int COM = 0;
+    int valuel = 0;
+    int valuer = 0;
+    int COM1 = 0;
+    int COM2 = 0;
+//    int error = 0;
+//    int MAX_DUTY = 600;
+//    int kp = 1;
 //    ScrollView myScrollView;
     TextView myTextView2;
+//    TextView myTextView3;
 
     SeekBar myControl;
     SeekBar myControl2;
@@ -81,6 +89,7 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
         myControl2 = (SeekBar) findViewById(R.id.seek2);
 //        myScrollView = (ScrollView) findViewById(R.id.ScrollView01);
         myTextView2 = (TextView) findViewById(R.id.textView02);
+//        myTextView3 = (TextView) findViewById(R.id.textView03);
 
         setMyControlListener();
         setMyControl2Listener();
@@ -254,7 +263,7 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
         try {
             rxString = new String(data, "UTF-8"); // put the data you got into a string
 //            myTextView2.append(rxString);
-            myTextView2.setText("the position is " + rxString);
+            myTextView2.setText("the velocity is " + rxString);
 //            myScrollView.fullScroll(View.FOCUS_DOWN);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -297,31 +306,222 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
         if (c != null) {
 //            int thresh = 0; // comparison value
             int[] pixels = new int[bmp.getWidth()]; // pixels[] is the RGBA data
-            int startY = 300; // which row in the bitmap to analyze to read
+            int startY = 250; // which row in the bitmap to analyze to read
+//            int endY = 400;
 //            for (int startY = 50; startY < bmp.getHeight(); startY = startY + 10) {
-                bmp.getPixels(pixels, 0, bmp.getWidth(), 0, startY, bmp.getWidth(), 1);
+            bmp.getPixels(pixels, 0, bmp.getWidth(), 0, startY, bmp.getWidth(), 1);
+            int sum_mr = 0; // the sum of the mass times the radius
+            int sum_m = 0; // the sum of the masses
+            for (int i = 0; i < bmp.getWidth(); i++) {
+                if (((green(pixels[i]) - red(pixels[i])) > -threshR)&&((green(pixels[i]) - red(pixels[i])) < threshR)&&(green(pixels[i])  > threshT)) {
+                    pixels[i] = rgb(1, 1, 1); // set the pixel to almost 100% black
 
-//                for (int i = 0; i < bmp.getWidth(); i++) {
-//                    if ((green(pixels[i]) - red(pixels[i])) > thresh) {
-//                        pixels[i] = rgb(0, 255, 0); // over write the pixel with pure green
-//                    }
-//                }
-
-                int sum_mr = 0; // the sum of the mass times the radius
-                int sum_m = 0; // the sum of the masses
-                for (int i = 0; i < bmp.getWidth(); i++) {
-                    if (((green(pixels[i]) - red(pixels[i])) > -threshR)&&((green(pixels[i]) - red(pixels[i])) < threshR)&&(green(pixels[i])  > threshT)) {
-                        pixels[i] = rgb(1, 1, 1); // set the pixel to almost 100% black
-
-                        sum_m = sum_m + green(pixels[i])+red(pixels[i])+blue(pixels[i]);
-                        sum_mr = sum_mr + (green(pixels[i])+red(pixels[i])+blue(pixels[i]))*i;
-                    }
+                    sum_m = sum_m + green(pixels[i])+red(pixels[i])+blue(pixels[i]);
+                    sum_mr = sum_mr + (green(pixels[i])+red(pixels[i])+blue(pixels[i]))*i;
                 }
-                // only use the data if there were a few pixels identified, otherwise you might get a divide by 0 error
+            }
+
+                // 200
+//            if(sum_m>5) {
+//                COM1 = sum_mr / sum_m;
+//                canvas.drawCircle(COM1, startY, 3, paint1);
+//            }
+//            else {
+//                COM1 = 0;
+//            }
+//
+//            bmp.getPixels(pixels, 0, bmp.getWidth(), 0, endY, bmp.getWidth(), 1);
+//            int sum_mr2 = 0; // the sum of the mass times the radius
+//            int sum_m2 = 0; // the sum of the masses
+//            for (int i = 0; i < bmp.getWidth(); i++) {
+//                if (((green(pixels[i]) - red(pixels[i])) > -threshR)&&((green(pixels[i]) - red(pixels[i])) < threshR)&&(green(pixels[i])  > threshT)) {
+//                    pixels[i] = rgb(1, 1, 1); // set the pixel to almost 100% black
+//
+//                    sum_m2 = sum_m2 + green(pixels[i])+red(pixels[i])+blue(pixels[i]);
+//                    sum_mr2 = sum_mr2 + (green(pixels[i])+red(pixels[i])+blue(pixels[i]))*i;
+//                }
+//            }
+//            //400
+//            if(sum_m2>5) {
+//                COM2 = sum_mr2 / sum_m2;
+//                canvas.drawCircle(COM2, endY, 3, paint1);
+//            }
+//            else {
+//                COM2 = 0;
+//            }
+//
+//
+//            if (COM1 < 0){
+//                COM1 = 0;
+//            }
+//            else if (COM1 > 600){
+//                COM1 = 600;
+//            }
+//
+//            if (COM2 < 0){
+//                COM2 = 0;
+//            }
+//            else if (COM2 > 650){
+//                COM2 = 650;
+//            }
+//
+//            COM = COM1 - COM2;
+//
+//            if (COM < -50){
+//                if (COM1 == 0){
+//                    valuer = 500;
+//                    valuel = 200;
+//                }
+//                else{
+//                    if (COM2 < 50){
+//                        valuel = 250;
+//                        valuer = 450;
+//                    }
+//                    else if (COM2 < 120){
+//                        valuel = COM2+100;
+//                        valuer = COM2+300;
+//                    }
+//                    else if (COM2 < 280){
+//                        valuel = COM2+100;
+//                        valuer = COM2+200;
+//                    }
+//                    else if (COM2 < 350){
+//                        valuer = 400;
+//                        valuel = 400;
+//                    }
+//                    else if (COM2 < 420){
+//                        valuel = COM2;
+//                        valuer = COM2-100;
+//                    }
+//                    else if (COM2 < 550){
+//                        valuel = COM2;
+//                        valuer = COM2-200;
+//                    }
+//                    else {
+//                        valuer = 250;
+//                        valuel = 450;
+//                    }
+//
+//                }
+//
+//            }
+//
+//            else if (COM > 50){
+//                if (COM1 == 0){
+//                    valuer = 500;
+//                    valuel = 200;
+//                }
+//                else{
+//                    if (COM2 < 50){
+//                        valuel = 250;
+//                        valuer = 450;
+//                    }
+//                    else if (COM2 < 120){
+//                        valuel = COM2+100;
+//                        valuer = COM2+300;
+//                    }
+//                    else if (COM2 < 280){
+//                        valuel = COM2+100;
+//                        valuer = COM2+200;
+//                    }
+//                    else if (COM2 < 350){
+//                        valuer = 400;
+//                        valuel = 400;
+//                    }
+//                    else if (COM2 < 420){
+//                        valuel = COM2;
+//                        valuer = COM2-100;
+//                    }
+//                    else if (COM < 550){
+//                        valuel = COM2;
+//                        valuer = COM2-200;
+//                    }
+//                    else {
+//                        valuer = 250;
+//                        valuel = 450;
+//                    }
+//
+//                }
+//
+//            }
+//
+//            else{
+//                valuer = 450;
+//                valuel = 450;
+//            }
+//
+//            String sendString = String.valueOf(valuer) + ' ' +  String.valueOf(valuel) + '\n';
+//            try {
+//                sPort.write(sendString.getBytes(), 10); // 10 is the timeout
+//            } catch (IOException e) { }
+
+
+                 //only use the data if there were a few pixels identified, otherwise you might get a divide by 0 error
                 if(sum_m>5){
                     COM = sum_mr / sum_m;
                     canvas.drawCircle(COM, startY,3,paint1);
-                    String sendString = String.valueOf(COM) + '\n';
+
+                    if (COM < 0){
+                        COM = 0;
+                    }
+                    else if (COM > 600){
+                        COM = 600;
+                    }
+
+                    //set velocity for motors
+                    if (COM < 50){
+                        valuel = 200;
+                        valuer = 500;
+                    }
+                    else if (COM < 120){
+                        valuel = COM+100;
+                        valuer = COM+400;
+                    }
+                    else if (COM < 200){
+                        valuel = COM+100;
+                        valuer = COM+300;
+                    }
+                    else if (COM < 320){
+                        valuel = COM+100;
+                        valuer = COM+200;
+                    }
+                    else if (COM < 360){
+                        valuer = 400;
+                        valuel = 400;
+                    }
+                    else if (COM < 420){
+                        valuel = COM;
+                        valuer = COM-100;
+                    }
+                    else if (COM < 490){
+                        valuel = COM;
+                        valuer = COM-200;
+                    }
+                    else if (COM < 550){
+                        valuel = COM;
+                        valuer = COM-300;
+                    }
+                    else {
+                        valuer = 200;
+                        valuel = 500;
+                    }
+
+                    // boundary for velocity
+                    if (valuel > 1200){
+                        valuel = 1200;
+                    }
+                    else if (valuel < 0){
+                        valuel = 0;
+                    }
+                    if (valuer > 1200){
+                        valuer = 1200;
+                    }
+                    else if (valuer < 0){
+                        valuer = 0;
+                    }
+
+
+                    String sendString = String.valueOf(valuer) + ' ' +  String.valueOf(valuel) + '\n';
                     try {
                         sPort.write(sendString.getBytes(), 10); // 10 is the timeout
                     } catch (IOException e) { }
@@ -329,7 +529,7 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
                 }
                 else{
                     COM = 0;
-                    String sendString = String.valueOf(COM) + '\n';
+                    String sendString = String.valueOf(200) + ' ' +  String.valueOf(200) + '\n';
                     try {
                         sPort.write(sendString.getBytes(), 10); // 10 is the timeout
                     } catch (IOException e) { }
@@ -337,7 +537,8 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
                 }
 
                 // update the row
-                bmp.setPixels(pixels, 0, bmp.getWidth(), 0, startY, bmp.getWidth(), 1);
+            bmp.setPixels(pixels, 0, bmp.getWidth(), 0, startY, bmp.getWidth(), 1);
+//            bmp.setPixels(pixels, 0, bmp.getWidth(), 0, endY, bmp.getWidth(), 1);
             }
 //        }
 
